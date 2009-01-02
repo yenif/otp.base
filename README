@@ -1,0 +1,10 @@
+Base erlang/otp dir structure with rake for build/test automation
+
+# rake -T
+rake clean    # Remove any temporary products.
+rake clobber  # Remove any generated file.
+rake compile  # Compile all
+rake doc      # Generate Documentation
+rake run      # Open up a shell and run CHANGE ME:start()
+rake shell    # Open up a shell
+rake test     # Run Unit Tests
