@@ -21,7 +21,9 @@ ERLC_FLAGS = "-I#{INCLUDE} +warn_unused_vars +warn_unused_import"
 
 SRC = FileList['src/*.erl']
 OBJ = SRC.pathmap("%{src,ebin}X.beam")
-
+MODS = OBJ.map() do |obj|
+    obj[/^(.*\/)?(.+?).beam$/,2]
+end
 CLEAN.include("ebin/*.beam")
 
 directory 'ebin'
@@ -35,18 +37,6 @@ task :compile => ['ebin'] + OBJ
 task :default => :compile
 
 task :test => [:compile] do
-  puts "Modules under test:"
-  OBJ.each do |obj|
-    obj[%r{.*/(.*).beam}]
-    mod = $1
-    test_output = `erl -pa ebin -run #{mod} test -run init stop`
-
-    if /\*failed\*/ =~ test_output
-      test_output[/(Failed.*Aborted.*Skipped.*Succeeded.*$)/]
-    else
-      test_output[/1>\s*(.*)\n/]
-    end
-
-    puts "#{mod}: #{$1}"
-  end
+  puts "Testing Modules: #{MODS.join(', ')}\n"
+  puts `erl -noshell -s eunit test #{MODS.join(' ')} -s init stop`
 end
