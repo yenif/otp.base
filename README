@@ -1,5 +1,7 @@
 Base erlang/otp dir structure with rake for build/test automation
 
+git repo: git://github.com/yenif/otp.base.git
+
 # rake -T
 rake clean    # Remove any temporary products.
 rake clobber  # Remove any generated file.
